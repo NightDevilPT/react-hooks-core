@@ -1,0 +1,712 @@
+---
+alwaysApply: true
+---
+
+# React Hookify - Development Rules & Patterns
+
+## 🎯 Core Principles
+
+1. **SSR-First**: All hooks MUST be compatible with Next.js and server-side rendering
+2. **Type-Safe**: Full TypeScript support with proper generics and inference
+3. **Performance**: Optimize for minimal re-renders and bundle size
+4. **Error Resilient**: Graceful fallbacks and comprehensive error handling
+5. **Production-Ready**: Write code that can run in production without modifications
+
+---
+
+## 📁 Complete Project Structure
+
+```
+react-hookify/
+│
+├── src/                                    # Source code
+│   │
+│   ├── [feature-name]/                     # Feature folder (e.g., storage, browser, timer, ui)
+│   │   │
+│   │   ├── hooks/                          # Feature-specific hooks
+│   │   │   ├── useHookName.ts              # Individual hook file
+│   │   │   ├── useAnotherHook.ts
+│   │   │   └── index.ts                    # Export all hooks in this feature
+│   │   │
+│   │   ├── context/                        # Feature-specific context/provider (optional)
+│   │   │   ├── FeatureProvider.tsx         # Provider wrapper component
+│   │   │   ├── FeatureContext.ts           # Context definition
+│   │   │   └── index.ts                    # Export provider and context
+│   │   │
+│   │   ├── interface/                      # Feature-specific TypeScript types
+│   │   │   ├── useHookName.interface.ts    # Types for specific hook
+│   │   │   ├── useAnotherHook.interface.ts # Types for another hook
+│   │   │   ├── FeatureProvider.interface.ts # Types for provider/context (if exists)
+│   │   │   └── index.ts                    # Export all types
+│   │   │
+│   │   ├── __tests__/
+│   │   │   ├── useHookName.test.tsx
+│   │   │   │   └── useAnotherHook.test.tsx
+│   │   │   ├── context/
+│   │   │   │   └── FeatureProvider.test.tsx
+│   │   │   └── integration.test.tsx        # Feature integration tests
+│   │   │
+│   │   ├── docs/                           # Feature-specific documentation
+│   │   │   ├── README.md                   # Feature overview
+│   │   │   ├── useHookName.md              # Hook documentation
+│   │   │   ├── useAnotherHook.md           # Another hook documentation
+│   │   │   ├── FeatureProvider.md          # Provider documentation (if exists)
+│   │   │
+│   │   └── index.ts                        # Feature main export (hooks + context + types)
+│   │
+│   └── index.ts                            # Main package entry point
+```
+
+---
+
+## 🎯 Feature Structure Pattern
+
+### Each Feature Must Contain:
+
+#### **1. hooks/** (Required)
+- Contains all hooks related to this feature
+- Each hook in a separate file: `useHookName.ts`
+- Must have `index.ts` to export all hooks
+- This is the core of every feature
+
+#### **2. context/** (Optional - Only if needed)
+- Contains provider component and context
+- `FeatureProvider.tsx` - Wrapper component for shared state
+- `FeatureContext.ts` - Context definition
+- Must have `index.ts` to export provider and context
+- **Use when**: Multiple hooks need shared state OR global configuration needed
+
+#### **3. interface/** (Required)
+- Contains all TypeScript types for this feature
+- Each hook has its own interface file: `useHookName.interface.ts`
+- Each provider/context has its own interface file: `FeatureProvider.interface.ts`
+- If hook and provider are tightly coupled, they can share one interface file
+- Must have `index.ts` to export all types
+- Types are scoped to this feature only
+
+#### **4. __tests__/** (Required)
+- Contains all tests for this feature
+- `hooks/` subfolder - Tests for each hook
+- `context/` subfolder - Tests for provider/context (if exists)
+- `integration.test.tsx` - Feature-level integration tests
+
+#### **5. docs/** (Required)
+- Contains all documentation for this feature
+- `README.md` - Feature overview and quick start
+- `useHookName.md` - Individual hook documentation files (one per hook)
+- `FeatureProvider.md` - Provider/context documentation (if exists)
+- **Note**: All documentation files are in the same folder (no nested subfolders)
+
+#### **6. index.ts** (Required)
+- Main feature export file at root of feature folder
+- Re-exports everything from hooks, context (if exists), and interface
+- Entry point for the feature
+
+---
+
+## 📝 File Naming Conventions
+
+### Feature Folder
+- **Format**: `kebab-case` or `camelCase`
+- **Examples**: `storage`, `browser`, `timer`, `ui`
+- **Location**: `src/[feature-name]/`
+
+### Hook Files
+- **Format**: `useCamelCase.ts`
+- **Examples**: `useLocalStorage.ts`, `useMediaQuery.ts`, `useClickOutside.ts`
+- **Location**: `src/[feature-name]/hooks/`
+
+### Context/Provider Files
+- **Format**: `{Feature}Provider.tsx` and `{Feature}Context.ts`
+- **Examples**: `StorageProvider.tsx`, `BrowserContext.ts`
+- **Location**: `src/[feature-name]/context/`
+
+### Interface/Type Files
+- **Format**: `{hookName}.interface.ts` or `{ProviderName}.interface.ts`
+- **Examples**: `useLocalStorage.interface.ts`, `useOnline.interface.ts`, `StorageProvider.interface.ts`
+- **Rule**: Each hook gets its own interface file, each provider gets its own interface file
+- **Location**: `src/[feature-name]/interface/`
+
+### Test Files
+- **Format**: `useCamelCase.test.tsx` (matches hook name exactly)
+- **Examples**: `useLocalStorage.test.tsx`, `StorageProvider.test.tsx`
+- **Location**: `src/[feature-name]/__tests__/`
+
+### Documentation Files
+- **Format**: Markdown files with descriptive names
+- **Examples**: `README.md`, `useHookName.md`, `FeatureProvider.md`
+- **Location**: `src/[feature-name]/docs/` (flat structure, no nested folders)
+- **Naming**: Hook docs use hook name: `useHookName.md`, Provider docs use provider name: `FeatureProvider.md`
+
+### Index Files (Barrel Exports)
+- **Format**: `index.ts`
+- **Required in**: Every subfolder (hooks, context, interface)
+- **Purpose**: Centralized exports for clean imports
+
+---
+
+## 🧪 Testing Rules & Required Test Cases
+
+### Test File Organization
+
+```
+src/[feature-name]/__tests__/
+├── hooks/
+│   ├── useHookName.test.tsx       # Hook tests
+│   └── useAnotherHook.test.tsx
+├── context/
+│   └── FeatureProvider.test.tsx   # Provider tests
+└── integration.test.tsx           # Integration tests
+```
+
+---
+
+## 📝 Required Test Cases for Hooks
+
+### Every Hook Must Have These 8 Tests:
+
+#### **1. Initialization Test**
+- Verify hook initializes with correct default values
+- Test default state values
+- Test initial return values
+- Verify proper type inference
+
+#### **2. SSR Compatibility Test**
+- Ensure hook works with Next.js server-side rendering
+- Test hook doesn't crash when `window` is undefined
+- Verify returns fallback values on server
+- Test handles missing browser APIs gracefully
+
+#### **3. State Update Test**
+- Verify hook updates state correctly
+- Test setter functions work
+- Test state updates trigger re-renders
+- Test async updates work correctly
+
+#### **4. Error Handling Test**
+- Ensure hook handles errors gracefully
+- Test try-catch blocks work
+- Verify errors don't crash the hook
+- Test `console.warn` is called (not `console.error`)
+- Verify fallback values are used on error
+
+#### **5. Cleanup Test**
+- Verify no memory leaks on unmount
+- Test event listeners are removed
+- Test subscriptions are cleaned up
+- Test timers are cleared
+- Verify no memory leaks
+
+#### **6. Options/Configuration Test**
+- Test all configuration options work
+- Verify each option property works as expected
+- Test default options are applied
+- Test custom options override defaults
+
+#### **7. Edge Cases Test**
+- Test boundary conditions and unusual inputs
+- Test null/undefined values
+- Test empty strings
+- Test special characters
+- Test large data sets
+- Test race conditions
+
+#### **8. TypeScript Type Test** (if applicable)
+- Ensure generic types work correctly
+- Test type inference works
+- Test generic constraints work
+- Verify type errors are caught
+
+---
+
+## 📝 Required Test Cases for Context/Providers
+
+### Every Provider Must Have These 6 Tests:
+
+#### **1. Provider Rendering Test**
+- Verify provider renders children correctly
+- Test provider wraps children
+- Test children can access context
+- Verify provider doesn't cause extra re-renders
+
+#### **2. Context Value Test**
+- Verify context provides correct values
+- Test context value is accessible
+- Test context value has correct shape
+- Test context value updates correctly
+
+#### **3. Hook Integration Test**
+- Test companion hook works with provider
+- Test hook can access context
+- Test hook throws error when used outside provider (if applicable)
+- Test hook receives updates from context
+
+#### **4. Provider Props Test**
+- Test provider configuration props
+- Test config prop works
+- Test default config is applied
+- Test invalid config is handled
+
+#### **5. State Update Test**
+- Verify state changes propagate to consumers
+- Test state updates trigger re-renders
+- Test all consumers receive updates
+- Test updates are batched correctly
+
+#### **6. Multiple Consumers Test**
+- Test multiple components can consume context
+- Test multiple children access same context
+- Test all consumers stay in sync
+- Test updates reach all consumers
+
+---
+
+## 📝 Required Integration Tests
+
+### Feature Integration Test (integration.test.tsx)
+
+#### **Purpose**: Test hooks and context working together
+
+#### **Required Integration Tests (3 minimum):**
+
+1. **Multiple Hooks Together Test**
+   - Test multiple hooks from the same feature work together
+   - Verify hooks don't interfere with each other
+   - Test shared state management (if applicable)
+
+2. **Hooks with Provider Test**
+   - Test hooks work correctly with feature provider
+   - Verify hook + context integration
+   - Test data flow between hooks and provider
+
+3. **Real-world Scenario Test**
+   - Test a complete user flow using the feature
+   - Example: User stores data, updates it, and removes it
+   - Test all feature components working together in a realistic scenario
+
+---
+
+## 📚 Documentation Rules & Required Content
+
+### Documentation File Organization
+
+```
+src/[feature-name]/docs/
+├── README.md                   # Feature overview
+├── useHookName.md              # Individual hook documentation
+├── useAnotherHook.md          # Another hook documentation
+└── FeatureProvider.md          # Provider/context documentation (if exists)
+```
+
+**Note**: All documentation files are stored directly in the `docs/` folder with no nested subfolders.
+
+---
+
+## 📝 Required Documentation Content for Hooks
+
+### Every Hook Documentation File Must Include:
+
+#### **1. Title**
+- Clear, descriptive title using the hook name
+- Format: `# useHookName`
+- Should match the hook file name exactly
+
+#### **2. Description & Use Cases**
+- **Description**: Brief explanation of what the hook does
+- **Problem it solves**: Explain the specific problem or need this hook addresses
+- **Use cases**: List common scenarios where this hook is valuable
+- **Benefits**: Highlight key advantages and why developers should use it
+- **When to use**: Guidance on when this hook is the right choice
+
+#### **3. Quick Example**
+- Simple, minimal code example showing basic usage
+- Should demonstrate the most common use case
+- Include import statement
+- Show the hook in a functional component
+- Keep it concise and easy to understand
+
+#### **4. Signature/API**
+- TypeScript function signature
+- Show the complete type definition
+- Include all generic types if applicable
+
+#### **5. Parameters (Options)**
+- **Detailed explanation of each parameter**:
+  - Parameter name and type
+  - Whether it's required or optional
+  - Default value (if any)
+  - Description of what it does
+  - When to use it
+  - Possible values/range
+  - Example values
+  - Any constraints or limitations
+
+#### **6. Return Value / Output Object**
+- **Detailed explanation of each returned property**:
+  - Property name and type
+  - Description of what it represents
+  - Possible values/range
+  - When it changes or updates
+  - Default values
+  - When to use it
+  - Example values
+  - Any special cases (null, undefined, Infinity, etc.)
+
+#### **7. SSR / Next.js Compatibility**
+- Explain SSR behavior
+- What values are returned during server-side rendering
+- How it handles hydration
+- Any special considerations for Next.js
+
+#### **8. Common Patterns**
+- Real-world usage patterns
+- Best practices
+- Common use cases with code examples
+- Integration with other hooks or libraries
+
+#### **9. Browser Compatibility**
+- Browser support information
+- API availability
+- Fallback behavior
+- Polyfill requirements (if any)
+
+#### **10. Performance Notes**
+- Performance considerations
+- When the hook updates
+- Memory usage
+- Optimization tips
+
+#### **11. Troubleshooting**
+- Common issues and solutions
+- Error scenarios
+- Debugging tips
+- Known limitations
+
+---
+
+## 📝 Required Documentation Content for Providers/Context
+
+### Every Provider Documentation File Must Include:
+
+#### **1. Title**
+- Clear, descriptive title using the provider name
+- Format: `# FeatureProvider`
+- Should match the provider file name exactly
+
+#### **2. Description & Use Cases**
+- **Description**: Brief explanation of what the provider does
+- **Problem it solves**: Explain why a provider is needed
+- **Use cases**: When to use a provider vs standalone hooks
+- **Benefits**: Shared state, global configuration, performance benefits
+- **When to use**: Guidance on when a provider is necessary
+
+#### **3. Quick Example**
+- Simple example showing provider setup
+- Show how to wrap components
+- Show how to use companion hooks
+- Include import statements
+
+#### **4. Signature/API**
+- TypeScript component signature
+- Props interface
+- Context value type
+
+#### **5. Provider Props**
+- **Detailed explanation of each prop**:
+  - Prop name and type
+  - Whether it's required or optional
+  - Default value (if any)
+  - Description of what it does
+  - When to use it
+  - Possible values
+  - Example values
+
+#### **6. Context Value**
+- **Detailed explanation of each context property**:
+  - Property name and type
+  - Description of what it provides
+  - How to access it
+  - When it updates
+  - Example usage
+
+#### **7. Companion Hooks**
+- List hooks that work with this provider
+- How to use them together
+- Examples of integration
+
+#### **8. SSR / Next.js Compatibility**
+- Provider behavior during SSR
+- How to use in Next.js App Router
+- How to use in Next.js Pages Router
+- Hydration considerations
+
+#### **9. Common Patterns**
+- Provider setup patterns
+- Best practices
+- Common use cases with code examples
+- Multiple provider usage
+
+#### **10. Performance Notes**
+- Provider performance impact
+- Re-render behavior
+- Optimization strategies
+
+#### **11. Troubleshooting**
+- Common issues and solutions
+- Provider setup problems
+- Context access issues
+- Debugging tips
+
+---
+
+## 📝 Required Documentation Content for Components (if applicable)
+
+### Every Component Documentation File Must Include:
+
+#### **1. Title**
+- Clear, descriptive title using the component name
+- Format: `# ComponentName`
+- Should match the component file name exactly
+
+#### **2. Description & Use Cases**
+- **Description**: Brief explanation of what the component does
+- **Problem it solves**: Explain the UI/UX problem it addresses
+- **Use cases**: Common scenarios where this component is used
+- **Benefits**: Key advantages
+- **When to use**: Guidance on component selection
+
+#### **3. Quick Example**
+- Simple example showing component usage
+- Include import statement
+- Show basic props
+- Minimal working example
+
+#### **4. Signature/API**
+- TypeScript component signature
+- Props interface
+- All prop types
+
+#### **5. Component Props**
+- **Detailed explanation of each prop**:
+  - Prop name and type
+  - Whether it's required or optional
+  - Default value (if any)
+  - Description of what it does
+  - When to use it
+  - Possible values
+  - Example values
+  - Visual examples (if applicable)
+
+#### **6. Component Behavior**
+- How the component renders
+- State management
+- Event handling
+- Lifecycle behavior
+
+#### **7. Styling & Customization**
+- Styling options
+- CSS classes
+- Theme support
+- Customization methods
+
+#### **8. Accessibility**
+- ARIA attributes
+- Keyboard navigation
+- Screen reader support
+- Accessibility best practices
+
+#### **9. Common Patterns**
+- Usage patterns
+- Best practices
+- Common use cases with examples
+- Integration examples
+
+#### **10. Performance Notes**
+- Component performance
+- Rendering optimization
+- When to use memoization
+
+#### **11. Troubleshooting**
+- Common issues and solutions
+- Styling problems
+- Behavior issues
+- Debugging tips
+
+---
+
+## 📊 Documentation File Structure Template
+
+### Hook Documentation Template:
+```markdown
+# useHookName
+
+[Brief description of what the hook does and what problem it solves]
+
+## Signature
+
+[TypeScript function signature]
+
+## Parameters
+
+### options (optional)
+
+[Detailed explanation of each parameter with type, description, default values, when to use, examples]
+
+## Return Value
+
+[Detailed explanation of each returned property with type, description, possible values, when it updates, examples]
+
+## Basic Usage
+
+[Quick example showing basic usage]
+
+## SSR / Next.js
+
+[SSR compatibility information]
+
+## Common Patterns
+
+[Real-world usage patterns with examples]
+
+## Browser Compatibility
+
+[Browser support information]
+
+## Performance Notes
+
+[Performance considerations]
+
+## Troubleshooting
+
+[Common issues and solutions]
+```
+
+### Provider Documentation Template:
+```markdown
+# FeatureProvider
+
+[Brief description of what the provider does and why it's needed]
+
+## Signature
+
+[TypeScript component signature]
+
+## Props
+
+[Detailed explanation of each prop]
+
+## Context Value
+
+[Detailed explanation of context properties]
+
+## Basic Usage
+
+[Quick example showing provider setup]
+
+## Companion Hooks
+
+[Hooks that work with this provider]
+
+## SSR / Next.js
+
+[SSR compatibility information]
+
+## Common Patterns
+
+[Usage patterns with examples]
+
+## Performance Notes
+
+[Performance considerations]
+
+## Troubleshooting
+
+[Common issues and solutions]
+```
+
+### Component Documentation Template:
+```markdown
+# ComponentName
+
+[Brief description of what the component does]
+
+## Signature
+
+[TypeScript component signature]
+
+## Props
+
+[Detailed explanation of each prop]
+
+## Basic Usage
+
+[Quick example showing component usage]
+
+## Styling & Customization
+
+[Styling options and customization]
+
+## Accessibility
+
+[Accessibility features]
+
+## Common Patterns
+
+[Usage patterns with examples]
+
+## Performance Notes
+
+[Performance considerations]
+
+## Troubleshooting
+
+[Common issues and solutions]
+```
+
+---
+
+## 📊 Test File Structure Template
+
+### Hook Test File Structure:
+```
+describe('[HookName]', () => {
+  beforeEach(() => { /* Setup */ })
+  afterEach(() => { /* Cleanup */ })
+  
+  describe('Initialization', () => { /* Tests */ })
+  describe('SSR Compatibility', () => { /* Tests */ })
+  describe('State Updates', () => { /* Tests */ })
+  describe('Error Handling', () => { /* Tests */ })
+  describe('Cleanup', () => { /* Tests */ })
+  describe('Options', () => { /* Tests */ })
+  describe('Edge Cases', () => { /* Tests */ })
+  describe('TypeScript Types', () => { /* Tests */ })
+})
+```
+
+### Provider Test File Structure:
+```
+describe('[FeatureProvider]', () => {
+  beforeEach(() => { /* Setup */ })
+  afterEach(() => { /* Cleanup */ })
+  
+  describe('Rendering', () => { /* Tests */ })
+  describe('Context Value', () => { /* Tests */ })
+  describe('Hook Integration', () => { /* Tests */ })
+  describe('Props', () => { /* Tests */ })
+  describe('State Updates', () => { /* Tests */ })
+  describe('Multiple Consumers', () => { /* Tests */ })
+})
+```
+
+### Integration Test File Structure:
+```
+describe('[Feature] Integration', () => {
+  beforeEach(() => { /* Setup */ })
+  afterEach(() => { /* Cleanup */ })
+  
+  describe('Multiple Hooks', () => { /* Tests */ })
+  describe('Hooks with Provider', () => { /* Tests */ })
+  describe('Real-world Scenarios', () => { /* Tests */ })
+})
+```

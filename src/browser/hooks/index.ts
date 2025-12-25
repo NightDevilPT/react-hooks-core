@@ -1,0 +1,8 @@
+export { useDeviceDetect } from './useDeviceDetect'
+export { useOnline } from './useOnline'
+export { useIdle } from './useIdle'
+export { useMediaQuery } from './useMediaQuery'
+export { useNetworkSpeed } from './useNetworkSpeed'
+export { useGeolocation } from './useGeolocation'
+export { useBattery } from './useBattery'
+
