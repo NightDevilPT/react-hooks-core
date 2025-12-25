@@ -1,6 +1,6 @@
 'use client'
 
-import { useDeviceDetect, useOnline, useIdle, useMediaQuery, useNetworkSpeed, useGeolocation, useBattery } from 'react-hookify'
+import { useDeviceDetect, useOnline, useIdle, useMediaQuery, useNetworkSpeed, useGeolocation, useBattery } from 'react-hooks-core'
 import { useState, useEffect } from 'react'
 import {
   Smartphone,
