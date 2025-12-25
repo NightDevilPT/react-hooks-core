@@ -1,26 +1,26 @@
 <div align="center">
-  <h1>⚡ React Hookify</h1>
+  <h1>⚡ React Hooks Core</h1>
   <p><strong>Production-ready React hooks that solve real-world problems</strong></p>
   
-  [![NPM Version](https://img.shields.io/npm/v/react-hookify.svg)](https://www.npmjs.com/package/react-hookify)
-  [![License](https://img.shields.io/npm/l/react-hookify.svg)](https://github.com/yourusername/react-hookify/blob/main/LICENSE)
+  [![NPM Version](https://img.shields.io/npm/v/react-hooks-core.svg)](https://www.npmjs.com/package/react-hooks-core)
+  [![License](https://img.shields.io/npm/l/react-hooks-core.svg)](https://github.com/NightDevilPT/react-hooks-core/blob/main/LICENSE)
   [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
-  [![Tests](https://img.shields.io/badge/Tests-92%20Passing-success.svg)](https://github.com/yourusername/react-hookify)
+  [![Tests](https://img.shields.io/badge/Tests-92%20Passing-success.svg)](https://github.com/NightDevilPT/react-hooks-core)
 </div>
 
 ---
 
-## 🎯 What is React Hookify?
+## 🎯 What is React Hooks Core?
 
-**React Hookify** is a comprehensive collection of production-ready React hooks designed to solve common problems you face when building modern React and Next.js applications. Instead of reinventing the wheel for every project, React Hookify provides battle-tested, well-documented hooks that work out of the box.
+**React Hooks Core** is a comprehensive collection of production-ready React hooks designed to solve common problems you face when building modern React and Next.js applications. Instead of reinventing the wheel for every project, React Hooks Core provides battle-tested, well-documented hooks that work out of the box.
 
-Whether you're building a SaaS platform, e-commerce site, dashboard, or any production application, React Hookify helps you ship faster with fewer bugs and better user experiences.
+Whether you're building a SaaS platform, e-commerce site, dashboard, or any production application, React Hooks Core helps you ship faster with fewer bugs and better user experiences.
 
 ---
 
 ## 💼 Built for Production
 
-### Why Production Projects Need React Hookify
+### Why Production Projects Need React Hooks Core
 
 Every production React application faces the same challenges:
 
@@ -30,7 +30,7 @@ Every production React application faces the same challenges:
 - **Responsive Design** - Build adaptive UIs that respond to viewport changes and system preferences
 - **Performance Optimization** - Adapt content quality based on network speed, battery level, and device capabilities
 
-**React Hookify solves these problems** with hooks that are:
+**React Hooks Core solves these problems** with hooks that are:
 - ✅ **SSR-Compatible** - Works seamlessly with Next.js App Router and Pages Router
 - ✅ **Type-Safe** - Full TypeScript support with proper generics and inference
 - ✅ **Well-Tested** - Comprehensive test coverage ensuring reliability
@@ -40,15 +40,15 @@ Every production React application faces the same challenges:
 
 ---
 
-## 🚀 How React Hookify Helps Your Production Projects
+## 🚀 How React Hooks Core Helps Your Production Projects
 
 ### ⚡ Faster Development
 
-Stop rewriting the same logic for every project. React Hookify provides ready-to-use hooks that handle edge cases, error scenarios, and browser compatibility issues you might miss. Focus on building features, not infrastructure.
+Stop rewriting the same logic for every project. React Hooks Core provides ready-to-use hooks that handle edge cases, error scenarios, and browser compatibility issues you might miss. Focus on building features, not infrastructure.
 
 ### 🐛 Fewer Bugs
 
-Every hook in React Hookify is thoroughly tested with comprehensive test suites covering initialization, SSR compatibility, state updates, error handling, cleanup, and edge cases. This means fewer bugs in production and more confidence in your code.
+Every hook in React Hooks Core is thoroughly tested with comprehensive test suites covering initialization, SSR compatibility, state updates, error handling, cleanup, and edge cases. This means fewer bugs in production and more confidence in your code.
 
 ### 📦 Optimized Bundle Size
 
@@ -56,7 +56,7 @@ Tree-shakeable imports mean you only bundle what you use. Zero dependencies keep
 
 ### 🎯 Better User Experience
 
-React Hookify hooks respect user preferences and device capabilities. Detect system dark mode, respect reduced motion preferences, adapt to network conditions, and optimize for battery life. Your users will notice the difference.
+React Hooks Core hooks respect user preferences and device capabilities. Detect system dark mode, respect reduced motion preferences, adapt to network conditions, and optimize for battery life. Your users will notice the difference.
 
 ### 🔒 Enhanced Security
 
@@ -85,15 +85,15 @@ Works with React 18+ and Next.js 13+ (both App Router and Pages Router). SSR-com
 ## 📦 Installation
 
 ```bash
-npm install react-hookify
+npm install react-hooks-core
 ```
 
 ```bash
-yarn add react-hookify
+yarn add react-hooks-core
 ```
 
 ```bash
-pnpm add react-hookify
+pnpm add react-hooks-core
 ```
 
 ---
@@ -103,7 +103,7 @@ pnpm add react-hookify
 All hooks work out of the box with zero configuration. Simply import what you need:
 
 ```tsx
-import { useDeviceDetect, useOnline, useIdle, useMediaQuery } from 'react-hookify'
+import { useDeviceDetect, useOnline, useIdle, useMediaQuery } from 'react-hooks-core'
 ```
 
 Tree-shakeable imports mean you only bundle what you use, keeping your production bundle size minimal.
@@ -112,7 +112,7 @@ Tree-shakeable imports mean you only bundle what you use, keeping your productio
 
 ## 📚 Available Hooks
 
-React Hookify provides hooks across multiple categories to help you build production-ready applications:
+React Hooks Core provides hooks across multiple categories to help you build production-ready applications:
 
 ### 🌐 Browser & Device Hooks
 
@@ -132,13 +132,13 @@ For detailed documentation on each hook, visit the [documentation folder](src/br
 
 ## 🎨 Live Demo
 
-An interactive demo showcasing all hooks is available in the `next-example` folder. See React Hookify in action with real-time updates and visual indicators.
+An interactive demo showcasing all hooks is available in the `next-example` folder. See React Hooks Core in action with real-time updates and visual indicators.
 
-Run locally: `npm run build && npm link && cd next-example && npm link react-hookify && npm run dev`
+Run locally: `npm run build && npm link && cd next-example && npm link react-hooks-core && npm run dev`
 
 ---
 
-## 🌟 Why Choose React Hookify for Production?
+## 🌟 Why Choose React Hooks Core for Production?
 
 ### Problem: Reinventing the Wheel
 
@@ -146,7 +146,7 @@ Every React project needs device detection, online status monitoring, responsive
 
 ### Solution: Production-Ready Hooks
 
-React Hookify provides battle-tested hooks that:
+React Hooks Core provides battle-tested hooks that:
 - ✅ Work out of the box with React 18+ and Next.js 13+
 - ✅ Handle SSR/CSR seamlessly without configuration
 - ✅ Include proper TypeScript types with full inference
@@ -169,7 +169,7 @@ React Hookify provides battle-tested hooks that:
 
 ## 🗺️ Roadmap
 
-We're actively expanding React Hookify with more production-ready hooks across multiple categories:
+We're actively expanding React Hooks Core with more production-ready hooks across multiple categories:
 
 ### 🔜 Coming Soon
 
@@ -206,7 +206,7 @@ Fast builds with `tsup` supporting both CommonJS and ES modules, TypeScript decl
 
 ## 🤝 Contributing
 
-We welcome contributions from the community! Whether it's bug fixes, new hooks, documentation improvements, or feature suggestions, your input helps make React Hookify better for everyone.
+We welcome contributions from the community! Whether it's bug fixes, new hooks, documentation improvements, or feature suggestions, your input helps make React Hooks Core better for everyone.
 
 Please see our [Contributing Guide](CONTRIBUTING.md) for guidelines on code style, testing requirements, and the pull request process.
 
@@ -216,30 +216,30 @@ Please see our [Contributing Guide](CONTRIBUTING.md) for guidelines on code styl
 
 MIT License - see [LICENSE](LICENSE) file for details
 
-Copyright (c) 2025 React Hookify
+Copyright (c) 2025 React Hooks Core
 
 ---
 
 ## 🔗 Links
 
-- [NPM Package](https://www.npmjs.com/package/react-hookify)
-- [GitHub Repository](https://github.com/yourusername/react-hookify)
-- [Issue Tracker](https://github.com/yourusername/react-hookify/issues)
+- [NPM Package](https://www.npmjs.com/package/react-hooks-core)
+- [GitHub Repository](https://github.com/NightDevilPT/react-hooks-core)
+- [Issue Tracker](https://github.com/NightDevilPT/react-hooks-core/issues)
 - [Changelog](CHANGELOG.md)
 
 ---
 
 ## 💬 Support
 
-- 🐛 [Report a bug](https://github.com/yourusername/react-hookify/issues/new?template=bug_report.md)
-- ✨ [Request a feature](https://github.com/yourusername/react-hookify/issues/new?template=feature_request.md)
-- 💡 [Ask a question](https://github.com/yourusername/react-hookify/discussions)
+- 🐛 [Report a bug](https://github.com/NightDevilPT/react-hooks-core/issues/new?template=bug_report.md)
+- ✨ [Request a feature](https://github.com/NightDevilPT/react-hooks-core/issues/new?template=feature_request.md)
+- 💡 [Ask a question](https://github.com/NightDevilPT/react-hooks-core/discussions)
 
 ---
 
 <div align="center">
   <p>Made with ❤️ by developers, for developers</p>
   <p>
-    <a href="https://github.com/yourusername/react-hookify">⭐ Star us on GitHub</a>
+    <a href="https://github.com/NightDevilPT/react-hooks-core">⭐ Star us on GitHub</a>
   </p>
 </div>
