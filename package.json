@@ -15,6 +15,11 @@
       "types": "./dist/browser/index.d.ts",
       "import": "./dist/browser/index.mjs",
       "require": "./dist/browser/index.js"
+    },
+    "./storage": {
+      "types": "./dist/storage/index.d.ts",
+      "import": "./dist/storage/index.mjs",
+      "require": "./dist/storage/index.js"
     }
   },
   "files": [
