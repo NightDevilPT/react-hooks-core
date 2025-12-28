@@ -11,6 +11,24 @@ alwaysApply: true
 3. **Performance**: Optimize for minimal re-renders and bundle size
 4. **Error Resilient**: Graceful fallbacks and comprehensive error handling
 5. **Production-Ready**: Write code that can run in production without modifications
+6. **Production-Grade Quality**: All hooks and components MUST be professional, optimized, and robust to prevent breaking production applications. This includes:
+   - Comprehensive error boundaries and try-catch blocks
+   - Null/undefined checks for all external APIs and browser features
+   - Proper cleanup of all subscriptions, event listeners, and timers
+   - No side effects that could cause memory leaks
+   - Defensive programming practices (validate inputs, handle edge cases)
+   - Stable APIs that don't introduce breaking changes
+   - Extensive testing coverage before release
+   - Code review and quality checks for all implementations
+7. **Zero Dependencies**: This package MUST be a pure package with no external dependencies (except React and React-DOM as peer dependencies). This means:
+   - NO third-party packages in dependencies
+   - NO utility libraries (lodash, ramda, etc.)
+   - NO helper libraries
+   - Use only native JavaScript/TypeScript APIs
+   - Use only browser native APIs (when needed)
+   - All utility functions must be implemented internally
+   - Keep the bundle size minimal and avoid dependency bloat
+   - Ensure compatibility and avoid version conflicts for end users
 
 ---
 
@@ -21,45 +39,92 @@ react-hookify/
 │
 ├── src/                                    # Source code
 │   │
-│   ├── [feature-name]/                     # Feature folder (e.g., storage, browser, timer, ui)
+│   ├── hooks/                              # Common/Core hooks (used anywhere in the app)
 │   │   │
-│   │   ├── hooks/                          # Feature-specific hooks
-│   │   │   ├── useHookName.ts              # Individual hook file
-│   │   │   ├── useAnotherHook.ts
-│   │   │   └── index.ts                    # Export all hooks in this feature
+│   │   ├── [feature-name]/                 # Feature folder (e.g., storage, browser, timer, ui)
+│   │   │   │
+│   │   │   ├── hooks/                      # Feature-specific hooks
+│   │   │   │   ├── useHookName.ts          # Individual hook file
+│   │   │   │   ├── useAnotherHook.ts
+│   │   │   │   └── index.ts                # Export all hooks in this feature
+│   │   │   │
+│   │   │   ├── interface/                  # Feature-specific TypeScript types
+│   │   │   │   ├── useHookName.interface.ts # Types for specific hook
+│   │   │   │   ├── useAnotherHook.interface.ts # Types for another hook
+│   │   │   │   ├── FeatureProvider.interface.ts # Types for provider/context (if exists)
+│   │   │   │   └── index.ts                # Export all types
+│   │   │   │
+│   │   │   ├── __tests__/
+│   │   │   │   ├── hooks/
+│   │   │   │   │   ├── useHookName.test.tsx
+│   │   │   │   │   └── useAnotherHook.test.tsx
+│   │   │   │   ├── context/
+│   │   │   │   │   └── FeatureProvider.test.tsx
+│   │   │   │   └── integration.test.tsx    # Feature integration tests
+│   │   │   │
+│   │   │   ├── docs/                       # Feature-specific documentation
+│   │   │   │   ├── README.md               # Feature overview
+│   │   │   │   ├── useHookName.md          # Hook documentation
+│   │   │   │   ├── useAnotherHook.md       # Another hook documentation
+│   │   │   │   ├── FeatureProvider.md      # Provider documentation (if exists)
+│   │   │   │
+│   │   │   └── index.ts                    # Feature main export (hooks + context + types)
 │   │   │
-│   │   ├── context/                        # Feature-specific context/provider (optional)
-│   │   │   ├── FeatureProvider.tsx         # Provider wrapper component
-│   │   │   ├── FeatureContext.ts           # Context definition
-│   │   │   └── index.ts                    # Export provider and context
-│   │   │
-│   │   ├── interface/                      # Feature-specific TypeScript types
-│   │   │   ├── useHookName.interface.ts    # Types for specific hook
-│   │   │   ├── useAnotherHook.interface.ts # Types for another hook
-│   │   │   ├── FeatureProvider.interface.ts # Types for provider/context (if exists)
-│   │   │   └── index.ts                    # Export all types
-│   │   │
-│   │   ├── __tests__/
-│   │   │   ├── useHookName.test.tsx
-│   │   │   │   └── useAnotherHook.test.tsx
-│   │   │   ├── context/
-│   │   │   │   └── FeatureProvider.test.tsx
-│   │   │   └── integration.test.tsx        # Feature integration tests
-│   │   │
-│   │   ├── docs/                           # Feature-specific documentation
-│   │   │   ├── README.md                   # Feature overview
-│   │   │   ├── useHookName.md              # Hook documentation
-│   │   │   ├── useAnotherHook.md           # Another hook documentation
-│   │   │   ├── FeatureProvider.md          # Provider documentation (if exists)
-│   │   │
-│   │   └── index.ts                        # Feature main export (hooks + context + types)
+│   │   └── index.ts                        # Export all common/core hooks
 │   │
-│   └── index.ts                            # Main package entry point
+│   ├── components/                         # All components
+│   │   ├── [component-category]/           # Component category (e.g., ui, context)
+│   │   │   │
+│   │   │   ├── ui/                         # UI components folder
+│   │   │   │   ├── ComponentName.tsx       # Individual component file
+│   │   │   │   ├── AnotherComponent.tsx
+│   │   │   │   └── index.ts                # Export all UI components
+│   │   │   │
+│   │   │   ├── hooks/                      # Component-specific hooks (optional)
+│   │   │   │   ├── useComponentHook.ts     # Hook used by components in this category
+│   │   │   │   ├── useAnotherHook.ts
+│   │   │   │   └── index.ts                # Export all component hooks
+│   │   │   │
+│   │   │   ├── context/                    # Component-specific context/provider (optional)
+│   │   │   │   ├── ComponentProvider.tsx   # Provider wrapper component
+│   │   │   │   ├── ComponentContext.ts     # Context definition
+│   │   │   │   └── index.ts                # Export provider and context
+│   │   │   │
+│   │   │   ├── interface/                  # Component-specific TypeScript types
+│   │   │   │   ├── ComponentName.interface.ts # Types for specific component
+│   │   │   │   ├── AnotherComponent.interface.ts # Types for another component
+│   │   │   │   ├── useComponentHook.interface.ts # Types for component hooks (if exists)
+│   │   │   │   ├── ComponentProvider.interface.ts # Types for provider/context (if exists)
+│   │   │   │   └── index.ts                # Export all types
+│   │   │   │
+│   │   │   ├── __tests__/
+│   │   │   │   ├── ComponentName.test.tsx
+│   │   │   │   ├── AnotherComponent.test.tsx
+│   │   │   │   ├── useComponentHook.test.tsx # Component hook tests (if exists)
+│   │   │   │   ├── ComponentProvider.test.tsx
+│   │   │   │   └── integration.test.tsx    # Component category integration tests
+│   │   │   │
+│   │   │   ├── docs/                       # Component-specific documentation
+│   │   │   │   ├── README.md                # Category overview
+│   │   │   │   ├── ComponentName.md        # Component documentation
+│   │   │   │   ├── AnotherComponent.md     # Another component documentation
+│   │   │   │   ├── useComponentHook.md     # Component hook documentation (if exists)
+│   │   │   │   ├── ComponentProvider.md    # Provider documentation (if exists)
+│   │   │   │
+│   │   │   └── index.ts                    # Category main export (ui + hooks + context + types)
+│   │   │
+│   │   └── index.ts                        # Export all components
+│   │
+│   └── index.ts                            # Main package entry point (exports from hooks and components)
 ```
 
 ---
 
 ## 🎯 Feature Structure Pattern
+
+### Hooks Folder Purpose
+
+The `src/hooks/` folder contains **common/core hooks** that can be used anywhere in the application. These are reusable, standalone hooks that are not tied to any specific component.
 
 ### Each Feature Must Contain:
 
@@ -68,6 +133,7 @@ react-hookify/
 - Each hook in a separate file: `useHookName.ts`
 - Must have `index.ts` to export all hooks
 - This is the core of every feature
+- **Purpose**: Common/core hooks usable anywhere
 
 #### **2. context/** (Optional - Only if needed)
 - Contains provider component and context
@@ -104,60 +170,98 @@ react-hookify/
 
 ---
 
-## 📝 File Naming Conventions
+## 🎯 Component Structure Pattern
 
-### Feature Folder
-- **Format**: `kebab-case` or `camelCase`
-- **Examples**: `storage`, `browser`, `timer`, `ui`
-- **Location**: `src/[feature-name]/`
+### Components Organization
 
-### Hook Files
-- **Format**: `useCamelCase.ts`
-- **Examples**: `useLocalStorage.ts`, `useMediaQuery.ts`, `useClickOutside.ts`
-- **Location**: `src/[feature-name]/hooks/`
+Components are organized by category in `src/components/[component-category]/`. Each category can have:
+- UI components
+- Component-specific hooks (used only within that category or exported)
+- Context providers (optional)
+- Types, tests, and documentation
 
-### Context/Provider Files
-- **Format**: `{Feature}Provider.tsx` and `{Feature}Context.ts`
-- **Examples**: `StorageProvider.tsx`, `BrowserContext.ts`
-- **Location**: `src/[feature-name]/context/`
+**Key Difference from Hooks Folder:**
+- `src/hooks/` - Contains **common/core hooks** usable anywhere (no components)
+- `src/components/[category]/hooks/` - Contains **component-specific hooks** used by components in that category (can be exported or internal)
 
-### Interface/Type Files
-- **Format**: `{hookName}.interface.ts` or `{ProviderName}.interface.ts`
-- **Examples**: `useLocalStorage.interface.ts`, `useOnline.interface.ts`, `StorageProvider.interface.ts`
-- **Rule**: Each hook gets its own interface file, each provider gets its own interface file
-- **Location**: `src/[feature-name]/interface/`
+#### **1. Component Categories**
 
-### Test Files
-- **Format**: `useCamelCase.test.tsx` (matches hook name exactly)
-- **Examples**: `useLocalStorage.test.tsx`, `StorageProvider.test.tsx`
-- **Location**: `src/[feature-name]/__tests__/`
+Component categories are organized in `src/components/[component-category]/` where `[component-category]` can be:
+- `ui` - For general UI components (buttons, modals, inputs, etc.)
+- `context` - For context providers (theme, auth, config, etc.)
+- Any other category name as needed (e.g., `forms`, `layout`, `navigation`, etc.)
 
-### Documentation Files
-- **Format**: Markdown files with descriptive names
-- **Examples**: `README.md`, `useHookName.md`, `FeatureProvider.md`
-- **Location**: `src/[feature-name]/docs/` (flat structure, no nested folders)
-- **Naming**: Hook docs use hook name: `useHookName.md`, Provider docs use provider name: `FeatureProvider.md`
+Each [component-category] follows the same structure pattern with `ui/`, `hooks/`, `context/`, `interface/`, `__tests__/`, `docs/`, and `index.ts` folders.
 
-### Index Files (Barrel Exports)
-- **Format**: `index.ts`
-- **Required in**: Every subfolder (hooks, context, interface)
-- **Purpose**: Centralized exports for clean imports
+#### **2. Component Category Structure**
 
----
+Each [component-category] folder must contain:
 
-## 🧪 Testing Rules & Required Test Cases
+#### **1. ui/** (Required)
+- Contains all UI components related to this category
+- Each component in a separate file: `ComponentName.tsx`
+- Must have `index.ts` to export all UI components
+- **Examples**: `Button.tsx`, `Modal.tsx`, `Input.tsx`
+- **Location**: `src/components/[component-category]/ui/`
 
-### Test File Organization
+#### **2. hooks/** (Optional - Only if needed)
+- Contains component-specific hooks used by components in this category
+- Each hook in a separate file: `useComponentHook.ts`
+- Must have `index.ts` to export all component hooks
+- **Use when**: Hooks are specific to components in this category
+- **Can be**: Internal (used only within category) or exported (usable outside category)
+- **Location**: `src/components/[component-category]/hooks/`
+- **Note**: These are different from common/core hooks in `src/hooks/` - these are component-specific
 
-```
-src/[feature-name]/__tests__/
-├── hooks/
-│   ├── useHookName.test.tsx       # Hook tests
-│   └── useAnotherHook.test.tsx
-├── context/
-│   └── FeatureProvider.test.tsx   # Provider tests
-└── integration.test.tsx           # Integration tests
-```
+#### **3. context/** (Optional - Only if needed)
+- Contains provider component and context for shared state
+- `ComponentProvider.tsx` - Wrapper component for shared state
+- `ComponentContext.ts` - Context definition
+- Must have `index.ts` to export provider and context
+- **Use when**: Multiple components need shared state OR global configuration needed
+- **Location**: `src/components/[component-category]/context/`
+
+#### **4. interface/** (Required)
+- Contains all TypeScript types for this category
+- Each component has its own interface file: `ComponentName.interface.ts`
+- Each provider/context has its own interface file: `ComponentProvider.interface.ts`
+- If component and provider are tightly coupled, they can share one interface file
+- Must have `index.ts` to export all types
+- Types are scoped to this category only
+- **Location**: `src/components/[component-category]/interface/`
+
+#### **5. __tests__/** (Required)
+- Contains all tests for this category
+- All test files in the same folder (no nested subfolders)
+- Tests for each UI component: `ComponentName.test.tsx`
+- Tests for component hooks: `useComponentHook.test.tsx` (if exists)
+- Tests for provider/context: `ComponentProvider.test.tsx` (if exists)
+- `integration.test.tsx` - Category-level integration tests
+- **Location**: `src/components/[component-category]/__tests__/`
+
+#### **6. docs/** (Required)
+- Contains all documentation for this category
+- `README.md` - Category overview and quick start
+- `ComponentName.md` - Individual component documentation files (one per component)
+- `ComponentProvider.md` - Provider/context documentation (if exists)
+- **Note**: All documentation files are in the same folder (no nested subfolders)
+- **Location**: `src/components/[component-category]/docs/`
+
+#### **7. index.ts** (Required)
+- Main category export file at root of category folder
+- Re-exports everything from ui, hooks (if exists), context (if exists), and interface
+- Entry point for the category
+- **Location**: `src/components/[component-category]/index.ts`
+
+#### **8. Component Requirements**
+
+- **SSR-First**: All components MUST be compatible with Next.js and server-side rendering
+- **Type-Safe**: Full TypeScript support with proper prop types
+- **Accessible**: Follow WCAG guidelines and include proper ARIA attributes
+- **Performance**: Optimize with React.memo, useMemo, useCallback when appropriate
+- **Error Resilient**: Include error boundaries and graceful error handling
+- **Zero Dependencies**: No external dependencies (except React and React-DOM)
+
 
 ---
 
@@ -219,6 +323,120 @@ src/[feature-name]/__tests__/
 
 ---
 
+## 📝 File Naming Conventions
+
+### Feature Folder
+- **Format**: `kebab-case` or `camelCase`
+- **Examples**: `storage`, `browser`, `timer`, `ui`
+- **Location**: `src/hooks/[feature-name]/`
+
+### Hook Files
+- **Format**: `useCamelCase.ts`
+- **Examples**: `useLocalStorage.ts`, `useMediaQuery.ts`, `useClickOutside.ts`
+- **Location**: `src/hooks/[feature-name]/hooks/`
+
+### Context/Provider Files (Hooks)
+- **Format**: `{Feature}Provider.tsx` and `{Feature}Context.ts`
+- **Examples**: `StorageProvider.tsx`, `BrowserContext.ts`
+- **Location**: `src/hooks/[feature-name]/context/`
+
+### Interface/Type Files (Hooks)
+- **Format**: `{hookName}.interface.ts` or `{ProviderName}.interface.ts`
+- **Examples**: `useLocalStorage.interface.ts`, `useOnline.interface.ts`, `StorageProvider.interface.ts`
+- **Rule**: Each hook gets its own interface file, each provider gets its own interface file
+- **Location**: `src/hooks/[feature-name]/interface/`
+
+### Test Files (Hooks)
+- **Format**: `useCamelCase.test.tsx` (matches hook name exactly)
+- **Examples**: `useLocalStorage.test.tsx`, `StorageProvider.test.tsx`
+- **Location**: `src/hooks/[feature-name]/__tests__/hooks/` (for hooks) or `src/hooks/[feature-name]/__tests__/context/` (for providers)
+
+### Documentation Files (Hooks)
+- **Format**: Markdown files with descriptive names
+- **Examples**: `README.md`, `useHookName.md`, `FeatureProvider.md`
+- **Location**: `src/hooks/[feature-name]/docs/` (flat structure, no nested folders)
+- **Naming**: Hook docs use hook name: `useHookName.md`, Provider docs use provider name: `FeatureProvider.md`
+
+### Component Category Folders
+- **Format**: `kebab-case` or `camelCase`
+- **Examples**: `ui`, `context`, `forms`, `layout`
+- **Location**: `src/components/[component-category]/`
+- **Purpose**: Organize components by category (UI components, context providers, etc.)
+
+### Component Files (UI Components)
+- **Format**: `PascalCase.tsx`
+- **Examples**: `Button.tsx`, `Modal.tsx`, `Input.tsx`, `ComboSelect.tsx`
+- **Location**: `src/components/[component-category]/ui/`
+- **Rule**: Each component in its own file, named exactly as the component
+- **Must have**: `index.ts` in the `ui/` folder to export all components
+
+### Component-Specific Hook Files
+- **Format**: `useCamelCase.ts`
+- **Examples**: `useComboSelect.ts`, `useModal.ts`, `useFormField.ts`
+- **Location**: `src/components/[component-category]/hooks/`
+- **Rule**: Each hook in its own file, named with `use` prefix
+- **Purpose**: Hooks specific to components in this category (can be internal or exported)
+- **Must have**: `index.ts` in the `hooks/` folder to export all component hooks
+- **Note**: These are different from common/core hooks in `src/hooks/`
+
+### Component Context/Provider Files
+- **Format**: `{Component}Provider.tsx` and `{Component}Context.ts`
+- **Examples**: `ButtonProvider.tsx`, `ModalContext.ts`
+- **Location**: `src/components/[component-category]/context/`
+- **Rule**: Only create if components in the category need shared state
+
+### Component Interface Files
+- **Format**: `ComponentName.interface.ts`, `useComponentHook.interface.ts`, or `ComponentProvider.interface.ts`
+- **Examples**: `Button.interface.ts`, `Modal.interface.ts`, `useComboSelect.interface.ts`, `ButtonProvider.interface.ts`
+- **Location**: `src/components/[component-category]/interface/`
+- **Rule**: Each component gets its own interface file, each hook gets its own interface file, each provider gets its own interface file
+
+### Component Test Files
+- **Format**: `ComponentName.test.tsx` or `useComponentHook.test.tsx` (matches name exactly)
+- **Examples**: `Button.test.tsx`, `Modal.test.tsx`, `useComboSelect.test.tsx`, `ButtonProvider.test.tsx`
+- **Location**: `src/components/[component-category]/__tests__/` (flat structure, no nested folders)
+- **Rule**: All test files are in the same `__tests__/` folder, no subfolders
+
+### Component Documentation Files
+- **Format**: Markdown files with component or hook name
+- **Examples**: `Button.md`, `Modal.md`, `useComboSelect.md`, `ButtonProvider.md`
+- **Location**: `src/components/[component-category]/docs/` (flat structure, no nested folders)
+- **Naming**: Component docs use component name: `ComponentName.md`, Hook docs use hook name: `useComponentHook.md`, Provider docs use provider name: `ComponentProvider.md`
+
+### Index Files (Barrel Exports)
+- **Format**: `index.ts`
+- **Required in**: Every subfolder (hooks, context, interface for features; ui, hooks, context, interface for component categories)
+- **Purpose**: Centralized exports for clean imports
+
+---
+
+## 🧪 Testing Rules & Required Test Cases
+
+### Test File Organization
+
+#### Hook Feature Tests
+```
+src/hooks/[feature-name]/__tests__/
+├── hooks/
+│   ├── useHookName.test.tsx       # Hook tests
+│   └── useAnotherHook.test.tsx
+├── context/
+│   └── FeatureProvider.test.tsx   # Provider tests
+└── integration.test.tsx           # Integration tests
+```
+
+#### Component Category Tests
+```
+src/components/[component-category]/__tests__/
+├── ComponentName.test.tsx          # UI component tests
+├── AnotherComponent.test.tsx
+├── useComponentHook.test.tsx      # Component hook tests (if exists)
+├── ComponentProvider.test.tsx     # Provider tests (if exists)
+└── integration.test.tsx           # Category integration tests
+```
+
+---
+
 ## 📝 Required Test Cases for Context/Providers
 
 ### Every Provider Must Have These 6 Tests:
@@ -261,6 +479,137 @@ src/[feature-name]/__tests__/
 
 ---
 
+## 📝 Required Test Cases for Component-Specific Hooks
+
+### Component-Specific Hooks vs Common/Core Hooks
+
+**Common/Core Hooks** (`src/hooks/`):
+- Reusable hooks usable anywhere in the application
+- Not tied to any specific component
+- Follow the 8 test suites defined for hooks
+
+**Component-Specific Hooks** (`src/components/[category]/hooks/`):
+- Hooks used by components within a specific category
+- Can be internal (used only within category) or exported (usable outside)
+- Follow the same 8 test suites as common/core hooks
+
+### Every Component-Specific Hook Must Have These 8 Tests:
+
+#### **1. Initialization Test**
+- Verify hook initializes with correct default values
+- Test default state values
+- Test initial return values
+- Verify proper type inference
+
+#### **2. SSR Compatibility Test**
+- Ensure hook works with Next.js server-side rendering
+- Test hook doesn't crash when `window` is undefined
+- Verify returns fallback values on server
+- Test handles missing browser APIs gracefully
+
+#### **3. State Update Test**
+- Verify hook updates state correctly
+- Test setter functions work
+- Test state updates trigger re-renders
+- Test async updates work correctly
+
+#### **4. Error Handling Test**
+- Ensure hook handles errors gracefully
+- Test try-catch blocks work
+- Verify errors don't crash the hook
+- Test `console.warn` is called (not `console.error`)
+- Verify fallback values are used on error
+
+#### **5. Cleanup Test**
+- Verify no memory leaks on unmount
+- Test event listeners are removed
+- Test subscriptions are cleaned up
+- Test timers are cleared
+- Verify no memory leaks
+
+#### **6. Options/Configuration Test**
+- Test all configuration options work
+- Verify each option property works as expected
+- Test default options are applied
+- Test custom options override defaults
+
+#### **7. Edge Cases Test**
+- Test boundary conditions and unusual inputs
+- Test null/undefined values
+- Test empty strings
+- Test special characters
+- Test large data sets
+- Test race conditions
+
+#### **8. TypeScript Type Test** (if applicable)
+- Ensure generic types work correctly
+- Test type inference works
+- Test generic constraints work
+- Verify type errors are caught
+
+---
+
+## 📝 Required Test Cases for Components
+
+### Every Component Must Have These 8 Tests:
+
+#### **1. Rendering Test**
+- Verify component renders without errors
+- Test component renders with required props
+- Test component renders with optional props
+- Verify proper type inference for props
+
+#### **2. SSR Compatibility Test**
+- Ensure component works with Next.js server-side rendering
+- Test component doesn't crash when `window` is undefined
+- Verify component renders correctly on server
+- Test handles missing browser APIs gracefully (if applicable)
+
+#### **3. Props Test**
+- Test all props work correctly
+- Test required props are enforced
+- Test optional props have correct defaults
+- Test prop validation and error handling
+- Test prop changes trigger re-renders
+
+#### **4. User Interaction Test**
+- Test click handlers work
+- Test keyboard navigation works
+- Test form inputs work correctly
+- Test user events trigger correct callbacks
+- Test disabled states prevent interactions
+
+#### **5. Accessibility Test**
+- Test ARIA attributes are present and correct
+- Test keyboard navigation works
+- Test screen reader compatibility
+- Test focus management
+- Test color contrast (if applicable)
+
+#### **6. Error Handling Test**
+- Ensure component handles errors gracefully
+- Test try-catch blocks work (if applicable)
+- Verify errors don't crash the component
+- Test error boundaries work correctly
+- Verify fallback UI is displayed on error
+
+#### **7. Edge Cases Test**
+- Test boundary conditions and unusual inputs
+- Test null/undefined values
+- Test empty strings
+- Test special characters
+- Test large data sets
+- Test rapid prop changes
+
+#### **8. TypeScript Type Test**
+- Ensure prop types work correctly
+- Test type inference works
+- Test generic types work (if applicable)
+- Verify type errors are caught
+- Test required vs optional props
+
+---
+
 ## 📝 Required Integration Tests
 
 ### Feature Integration Test (integration.test.tsx)
@@ -284,18 +633,51 @@ src/[feature-name]/__tests__/
    - Example: User stores data, updates it, and removes it
    - Test all feature components working together in a realistic scenario
 
+### Component Category Integration Test (integration.test.tsx)
+
+#### **Purpose**: Test components and component-specific hooks working together within a category
+
+#### **Required Integration Tests (3 minimum):**
+
+1. **Multiple Components Together Test**
+   - Test multiple components from the same category work together
+   - Verify components don't interfere with each other
+   - Test shared state management (if applicable)
+
+2. **Components with Hooks and Provider Test**
+   - Test components work correctly with component-specific hooks
+   - Test components work correctly with category provider
+   - Verify component + hook + context integration
+   - Test data flow between components, hooks, and provider
+
+3. **Real-world Scenario Test**
+   - Test a complete user flow using the category components
+   - Example: User fills a form with multiple components using component-specific hooks
+   - Test all category components, hooks, and providers working together in a realistic scenario
+
 ---
 
 ## 📚 Documentation Rules & Required Content
 
 ### Documentation File Organization
 
+#### Hook Feature Documentation
 ```
-src/[feature-name]/docs/
+src/hooks/[feature-name]/docs/
 ├── README.md                   # Feature overview
 ├── useHookName.md              # Individual hook documentation
 ├── useAnotherHook.md          # Another hook documentation
 └── FeatureProvider.md          # Provider/context documentation (if exists)
+```
+
+#### Component Category Documentation
+```
+src/components/[component-category]/docs/
+├── README.md                   # Category overview
+├── ComponentName.md            # Individual component documentation
+├── AnotherComponent.md         # Another component documentation
+├── useComponentHook.md         # Component hook documentation (if exists)
+└── ComponentProvider.md       # Provider/context documentation (if exists)
 ```
 
 **Note**: All documentation files are stored directly in the `docs/` folder with no nested subfolders.
@@ -459,7 +841,93 @@ src/[feature-name]/docs/
 
 ---
 
-## 📝 Required Documentation Content for Components (if applicable)
+## 📝 Required Documentation Content for Component-Specific Hooks
+
+### Component-Specific Hook Documentation
+
+Component-specific hooks follow the same documentation structure as common/core hooks but are documented within the component category's `docs/` folder.
+
+### Every Component-Specific Hook Documentation File Must Include:
+
+#### **1. Title**
+- Clear, descriptive title using the hook name
+- Format: `# useComponentHook`
+- Should match the hook file name exactly
+
+#### **2. Description & Use Cases**
+- **Description**: Brief explanation of what the hook does
+- **Problem it solves**: Explain the specific problem this hook addresses for components in this category
+- **Use cases**: List common scenarios where this hook is used with components
+- **Benefits**: Highlight key advantages
+- **When to use**: Guidance on when to use this hook vs common/core hooks
+
+#### **3. Quick Example**
+- Simple, minimal code example showing basic usage
+- Should demonstrate usage with components in the category
+- Include import statement
+- Show the hook in a functional component
+- Keep it concise and easy to understand
+
+#### **4. Signature/API**
+- TypeScript function signature
+- Show the complete type definition
+- Include all generic types if applicable
+
+#### **5. Parameters (Options)**
+- **Detailed explanation of each parameter**:
+  - Parameter name and type
+  - Whether it's required or optional
+  - Default value (if any)
+  - Description of what it does
+  - When to use it
+  - Possible values/range
+  - Example values
+  - Any constraints or limitations
+
+#### **6. Return Value / Output Object**
+- **Detailed explanation of each returned property**:
+  - Property name and type
+  - Description of what it represents
+  - Possible values/range
+  - When it changes or updates
+  - Default values
+  - When to use it
+  - Example values
+  - Any special cases (null, undefined, Infinity, etc.)
+
+#### **7. SSR / Next.js Compatibility**
+- Explain SSR behavior
+- What values are returned during server-side rendering
+- How it handles hydration
+- Any special considerations for Next.js
+
+#### **8. Common Patterns**
+- Real-world usage patterns with components
+- Best practices
+- Common use cases with code examples
+- Integration with components in the category
+
+#### **9. Browser Compatibility**
+- Browser support information
+- API availability
+- Fallback behavior
+- Polyfill requirements (if any)
+
+#### **10. Performance Notes**
+- Performance considerations
+- When the hook updates
+- Memory usage
+- Optimization tips
+
+#### **11. Troubleshooting**
+- Common issues and solutions
+- Error scenarios
+- Debugging tips
+- Known limitations
+
+---
+
+## 📝 Required Documentation Content for Components
 
 ### Every Component Documentation File Must Include:
 
@@ -534,137 +1002,6 @@ src/[feature-name]/docs/
 
 ---
 
-## 📊 Documentation File Structure Template
-
-### Hook Documentation Template:
-```markdown
-# useHookName
-
-[Brief description of what the hook does and what problem it solves]
-
-## Signature
-
-[TypeScript function signature]
-
-## Parameters
-
-### options (optional)
-
-[Detailed explanation of each parameter with type, description, default values, when to use, examples]
-
-## Return Value
-
-[Detailed explanation of each returned property with type, description, possible values, when it updates, examples]
-
-## Basic Usage
-
-[Quick example showing basic usage]
-
-## SSR / Next.js
-
-[SSR compatibility information]
-
-## Common Patterns
-
-[Real-world usage patterns with examples]
-
-## Browser Compatibility
-
-[Browser support information]
-
-## Performance Notes
-
-[Performance considerations]
-
-## Troubleshooting
-
-[Common issues and solutions]
-```
-
-### Provider Documentation Template:
-```markdown
-# FeatureProvider
-
-[Brief description of what the provider does and why it's needed]
-
-## Signature
-
-[TypeScript component signature]
-
-## Props
-
-[Detailed explanation of each prop]
-
-## Context Value
-
-[Detailed explanation of context properties]
-
-## Basic Usage
-
-[Quick example showing provider setup]
-
-## Companion Hooks
-
-[Hooks that work with this provider]
-
-## SSR / Next.js
-
-[SSR compatibility information]
-
-## Common Patterns
-
-[Usage patterns with examples]
-
-## Performance Notes
-
-[Performance considerations]
-
-## Troubleshooting
-
-[Common issues and solutions]
-```
-
-### Component Documentation Template:
-```markdown
-# ComponentName
-
-[Brief description of what the component does]
-
-## Signature
-
-[TypeScript component signature]
-
-## Props
-
-[Detailed explanation of each prop]
-
-## Basic Usage
-
-[Quick example showing component usage]
-
-## Styling & Customization
-
-[Styling options and customization]
-
-## Accessibility
-
-[Accessibility features]
-
-## Common Patterns
-
-[Usage patterns with examples]
-
-## Performance Notes
-
-[Performance considerations]
-
-## Troubleshooting
-
-[Common issues and solutions]
-```
-
----
-
 ## 📊 Test File Structure Template
 
 ### Hook Test File Structure:
@@ -699,6 +1036,40 @@ describe('[FeatureProvider]', () => {
 })
 ```
 
+### Component Test File Structure:
+```
+describe('[ComponentName]', () => {
+  beforeEach(() => { /* Setup */ })
+  afterEach(() => { /* Cleanup */ })
+  
+  describe('Rendering', () => { /* Tests */ })
+  describe('SSR Compatibility', () => { /* Tests */ })
+  describe('Props', () => { /* Tests */ })
+  describe('User Interaction', () => { /* Tests */ })
+  describe('Accessibility', () => { /* Tests */ })
+  describe('Error Handling', () => { /* Tests */ })
+  describe('Edge Cases', () => { /* Tests */ })
+  describe('TypeScript Types', () => { /* Tests */ })
+})
+```
+
+### Component-Specific Hook Test File Structure:
+```
+describe('[useComponentHook]', () => {
+  beforeEach(() => { /* Setup */ })
+  afterEach(() => { /* Cleanup */ })
+  
+  describe('Initialization', () => { /* Tests */ })
+  describe('SSR Compatibility', () => { /* Tests */ })
+  describe('State Updates', () => { /* Tests */ })
+  describe('Error Handling', () => { /* Tests */ })
+  describe('Cleanup', () => { /* Tests */ })
+  describe('Options', () => { /* Tests */ })
+  describe('Edge Cases', () => { /* Tests */ })
+  describe('TypeScript Types', () => { /* Tests */ })
+})
+```
+
 ### Integration Test File Structure:
 ```
 describe('[Feature] Integration', () => {
@@ -707,6 +1078,18 @@ describe('[Feature] Integration', () => {
   
   describe('Multiple Hooks', () => { /* Tests */ })
   describe('Hooks with Provider', () => { /* Tests */ })
+  describe('Real-world Scenarios', () => { /* Tests */ })
+})
+```
+
+### Component Category Integration Test File Structure:
+```
+describe('[ComponentCategory] Integration', () => {
+  beforeEach(() => { /* Setup */ })
+  afterEach(() => { /* Cleanup */ })
+  
+  describe('Multiple Components', () => { /* Tests */ })
+  describe('Components with Hooks and Provider', () => { /* Tests */ })
   describe('Real-world Scenarios', () => { /* Tests */ })
 })
 ```
